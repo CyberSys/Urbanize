@@ -2,7 +2,7 @@ SCRIPT_START
 REQUIRE CheckStore.sc
 {
 LVAR_INT scplayer
-LVAR_INT iModel hObject pLabel bActive
+LVAR_INT iModel hObject pLabel bActive iHour iMinute
 LVAR_FLOAT x y z
 CONST_FLOAT OBJ_RADIUS 150.0
 
@@ -114,17 +114,21 @@ ENDDUMP
 
 //------- Queue 1 -------//
 CheckStart_Queue1:
-CONST_FLOAT Queue1_X 305.2728 
-CONST_FLOAT Queue1_Y -1768.9983
-CONST_FLOAT Queue1_Z 7.6797
-CONST_FLOAT Queue1_R 200.0
-IF LOCATE_CHAR_ANY_MEANS_3D scplayer (QUEUE1_X QUEUE1_Y QUEUE1_Z) (QUEUE1_R QUEUE1_R QUEUE1_R) 0
-    GET_LABEL_POINTER Running_Queue1 (pLabel)
-    READ_MEMORY pLabel 1 FALSE (bActive)
-    IF bActive = FALSE
-        WRITE_MEMORY pLabel 4 1 FALSE
-        IS_PC_VERSION
-        RETURN
+CONST_FLOAT Queue1_X 1124.9769 
+CONST_FLOAT Queue1_Y -1129.0265
+CONST_FLOAT Queue1_Z 23.8047
+CONST_FLOAT Queue1_R 150.0
+GET_TIME_OF_DAY iHour iMinute
+IF iHour >= 20
+OR iHour <= 4
+    IF LOCATE_CHAR_ANY_MEANS_3D scplayer (QUEUE1_X QUEUE1_Y QUEUE1_Z) (QUEUE1_R QUEUE1_R QUEUE1_R) 0
+        GET_LABEL_POINTER Running_Queue1 (pLabel)
+        READ_MEMORY pLabel 1 FALSE (bActive)
+        IF bActive = FALSE
+            WRITE_MEMORY pLabel 4 1 FALSE
+            IS_PC_VERSION
+            RETURN
+        ENDIF
     ENDIF
 ENDIF
 IS_AUSTRALIAN_GAME
