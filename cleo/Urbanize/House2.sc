@@ -2,7 +2,7 @@
     TEMPLATE HOUSE2
 Example of creating simple peds doing some anim.
     Complexibility: 1/5
-    TESTED: NO
+    TESTED: YES
 */
 SCRIPT_START
 {
@@ -23,7 +23,7 @@ SCRIPT_START
 ////////////////////////////////////////////// Init ///////////////////////////////////////////////
 
     // load
-    REQUEST_IPL IFP
+    REQUEST_ANIMATION IFP
     WHILE NOT HAS_ANIMATION_LOADED IFP
         WAIT 0
     ENDWHILE
