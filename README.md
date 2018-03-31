@@ -11,3 +11,4 @@ http://brmodstudio.forumeiros.com/t5486-projeto-urbanize
 O mod está aberto para qualquer um contribuir.
 Está sendo programado em GTA3script. Se você quer começar a contribuir e nunca mexeu com Git no Visual Studio Code antes, leia um simples tutorial localizado no arquivo CONTRIBUTING.md:
 https://github.com/JuniorDjjr/Urbanize/blob/master/CONTRIBUTING.md
+Se você não quer utilizar git, basta enviar os arquivos normalmente aqui no github, sem mistérios.
