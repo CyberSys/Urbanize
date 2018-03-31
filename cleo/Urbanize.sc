@@ -10,56 +10,56 @@ GET_PLAYER_CHAR 0 scplayer
  
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-main_loop:
-WAIT 0
-IF IS_PLAYER_PLAYING 0
+WHILE TRUE
+    WAIT 0
+    IF IS_PLAYER_PLAYING 0
 
-    //---------- Triggers
+        //---------- Triggers
 
-    //-- Locations
-    IF GOSUB CheckStart_House1
-        STREAM_CUSTOM_SCRIPT "Urbanize/House1.cs" (pLabel) // - EXAMPLE
-    ENDIF
-    IF GOSUB CheckStart_House2
-        STREAM_CUSTOM_SCRIPT "Urbanize/House2.cs" (pLabel) // - EXAMPLE
-    ENDIF
-    IF GOSUB CheckStart_Queue1
-        STREAM_CUSTOM_SCRIPT "Urbanize/Queue1.cs" (pLabel)
-    ENDIF
+        //-- Locations
+        IF GOSUB CheckStart_House1
+            STREAM_CUSTOM_SCRIPT "Urbanize/House1.cs" (pLabel) // - EXAMPLE
+        ENDIF
+        IF GOSUB CheckStart_House2
+            STREAM_CUSTOM_SCRIPT "Urbanize/House2.cs" (pLabel) // - EXAMPLE
+        ENDIF
+        IF GOSUB CheckStart_Queue1
+            STREAM_CUSTOM_SCRIPT "Urbanize/Queue1.cs" (pLabel)
+        ENDIF
 
- 
-    //-- Objects
-    GET_CHAR_COORDINATES scplayer (x y z)
+    
+        //-- Objects
+        GET_CHAR_COORDINATES scplayer (x y z)
 
-    IF GET_RANDOM_OBJECT_IN_SPHERE_NO_SAVE_RECURSIVE (x y z) (OBJ_RADIUS) (FALSE) hObject
-        for_all_objects_loop:
-        GET_OBJECT_MODEL  hObject iModel 
-        /////////////////////////////////////////
+        IF GET_RANDOM_OBJECT_IN_SPHERE_NO_SAVE_RECURSIVE (x y z) (OBJ_RADIUS) (FALSE) hObject
+            for_all_objects_loop:
+            GET_OBJECT_MODEL  hObject iModel 
+            /////////////////////////////////////////
 
-        IF iModel = 643 //kb_chr_tbl_test (mesa 4 cadeiras)
-            GET_LABEL_POINTER RunningList_Table1 (pLabel)
-            IF CLEO_CALL CheckStore_Object 0 (pLabel, hObject)
-                STREAM_CUSTOM_SCRIPT "Urbanize/Table1.cs" (pLabel, hObject)
+            IF iModel = 643 //kb_chr_tbl_test (mesa 4 cadeiras)
+                GET_LABEL_POINTER RunningList_Table1 (pLabel)
+                IF CLEO_CALL CheckStore_Object 0 (pLabel, hObject)
+                    STREAM_CUSTOM_SCRIPT "Urbanize/Table1.cs" (pLabel, hObject)
+                ENDIF
+            ENDIF
+
+            IF iModel = 1415 //dyn_dumpster (entulhos) - TODO
+                GET_LABEL_POINTER RunningList_Dump1 (pLabel)
+                IF CLEO_CALL CheckStore_Object 0 (pLabel, hObject)
+                    STREAM_CUSTOM_SCRIPT "Urbanize/Dump1.cs" (pLabel, hObject)
+                ENDIF
+            ENDIF
+
+            /////////////////////////////////////////
+            IF GET_RANDOM_OBJECT_IN_SPHERE_NO_SAVE_RECURSIVE (x y z) (OBJ_RADIUS) (TRUE) hObject
+                GOTO for_all_objects_loop
             ENDIF
         ENDIF
 
-        IF iModel = 1415 //dyn_dumpster (entulhos) - TODO
-            GET_LABEL_POINTER RunningList_Dump1 (pLabel)
-            IF CLEO_CALL CheckStore_Object 0 (pLabel, hObject)
-                STREAM_CUSTOM_SCRIPT "Urbanize/Dump1.cs" (pLabel, hObject)
-            ENDIF
-        ENDIF
+        //---------- End of Triggers
 
-        /////////////////////////////////////////
-        IF GET_RANDOM_OBJECT_IN_SPHERE_NO_SAVE_RECURSIVE (x y z) (OBJ_RADIUS) (TRUE) hObject
-            GOTO for_all_objects_loop
-        ENDIF
     ENDIF
-
-    //---------- End of Triggers
-
-ENDIF
-GOTO main_loop 
+ENDWHILE
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -75,11 +75,11 @@ IF LOCATE_CHAR_ANY_MEANS_3D scplayer (House1_X House1_Y House1_Z) (House1_R Hous
     READ_MEMORY pLabel 1 FALSE (bActive)
     IF bActive = FALSE
         WRITE_MEMORY pLabel 4 1 FALSE
-        IS_PC_VERSION
+        RETURN_TRUE
         RETURN
     ENDIF
 ENDIF
-IS_AUSTRALIAN_GAME
+RETURN_FALSE
 RETURN
 
 Running_House1:
@@ -99,11 +99,11 @@ IF LOCATE_CHAR_ANY_MEANS_3D scplayer (House2_X House2_Y House2_Z) (House2_R Hous
     READ_MEMORY pLabel 1 FALSE (bActive)
     IF bActive = FALSE
         WRITE_MEMORY pLabel 4 1 FALSE
-        IS_PC_VERSION
+        RETURN_TRUE
         RETURN
     ENDIF
 ENDIF
-IS_AUSTRALIAN_GAME
+RETURN_FALSE
 RETURN
 
 Running_House2:
@@ -126,12 +126,12 @@ OR iHour <= 4
         READ_MEMORY pLabel 1 FALSE (bActive)
         IF bActive = FALSE
             WRITE_MEMORY pLabel 4 1 FALSE
-            IS_PC_VERSION
+            RETURN_TRUE
             RETURN
         ENDIF
     ENDIF
 ENDIF
-IS_AUSTRALIAN_GAME
+RETURN_FALSE
 RETURN
 
 Running_Queue1:
