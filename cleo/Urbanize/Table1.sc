@@ -13,11 +13,6 @@ REQUIRE RemoveObj.sc
     CONST_FLOAT OBJ_RADIUS 150.0
 
     //--- Init script
-    IF pLabel = 0
-        TERMINATE_THIS_CUSTOM_SCRIPT
-        // var types:
-        CREATE_OBJECT 0 0.0 0.0 0.0 hObject
-    ENDIF
     GET_PLAYER_CHAR 0 scplayer
 
     //--- Load
